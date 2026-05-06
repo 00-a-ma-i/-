@@ -1,0 +1,40 @@
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# 虚拟环境
+venv/
+env/
+ENV/
+.venv
+
+# Flask 相关
+instance/
+.webassets-cache
+.env
+.flaskenv
+
+# 数据库文件（如果你不希望将开发数据库提交）
+*.db
+*.sqlite
+*.sqlite3
+
+# 上传的媒体文件（根据上面的设计）
+uploads/
+!uploads/README.md   # 可以保留目录说明但忽略文件内容
+
+# IDE 配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 日志文件
+*.log
+
+# 操作系统生成文件
+.DS_Store
+Thumbs.db

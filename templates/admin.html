@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ '编辑文章' if article else '新建文章' }}{% endblock %}
+{% block content %}
+    <h2>我的博客 - {{ '编辑文章' if article else '新建文章' }}</h2>
+    <form action="{{ url_for('admin', article_id = article.id if article else 0) }}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="">标题</label>
+            <input type="text" name="title" value="{{ article.title if article else '' }}" required>
+        </div>
+        <div class="form-group">
+            <label for="">Markdown 内容</label>
+            <textarea name="content_md" id="" row="15" required>{{ article.content_md if article else '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="">上传媒体文件（图片/音频/视频，可多选）</label>
+            <input type="file" name="media_files" multiple accept="image/*,audio/*,video/*">
+            <small>支持格式：图片(jpg/png/gif/webp)、音频(mp3/wav/ogg)、视频(mp4/webm/avi/mov/mkv)</small>
+        </div>
+
+        {% if article and article.media_records %}
+            <h3>已上传的媒体文件</h3>
+            <ul class="media_list">
+                {% for media_record in article.media_records %}
+                    <li>
+                        {{ media_record.original_filename }} ({{ (media_record.file_size / 1024)|round(1) }} KB)
+                        <form action="" method="post">
+                            <button type="submit" class="link-btn">删除</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div class="form-group">
+            <button type="submit" class="btn">保存</button>
+            <a href="{{url_for('index')}}" class="cancel">取消</a>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{'文章浏览'}{% endblock %}
+{% block content %}
+    <article class="post-full">
+         <h1>{{ article.title }}</h1>
+        <div class="post-meta">
+            创建于 {{ article.created_at.strftime('%Y-%m-%d %H:%M') }}
+            {% if article.updated_at != article.created_at %}
+                | 更新于 {{ article.updated_at.strftime('%Y-%m-%d %H:%M') }}
+            {% endif %}
+        </div>
+        <div class="post-content">
+            {{ article.render_html() | safe }}
+        </div>
+
+        {% if article.media_records %}
+            <h3>📎 附件资源</h3>
+            <div class="media-gallery">
+                {% for media_record in article.media_records %}
+                    <div class="media-item">
+                        {% if media_record.mime_type.startswith('image/') %}
+                            <img src="/media/{{media_record.id}}" alt="{{ media_record.original_filename }}" class="media-image">
+                        {% elif media_record.mime_type.startswith('audio/') %}
+                            <audio controls>
+                                <source src="/media/{{media_record.id}}" type="{{ media_record.mime_type }}">
+                                您的浏览器不支持 audio 元素。
+                            </audio>
+                        {% elif media_record.mime_type.startswith('video/') %}
+                            <video controls class="media-video">
+                                <source src="/media/{{media_record.id}}" type="{{ media_record.mime_type }}">
+                                您的浏览器不支持 video 元素。
+                            </video>
+                        {% endif %}
+                        <div class="media-caption">
+                            {{ media_record.original_filename }} ({{ (media_record.file_size / 1024)|round(1) }} KB)
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </article>
+{% endblock %}

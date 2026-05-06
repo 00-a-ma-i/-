@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}我的博客 - 首页{% endblock %}
+{% block content %}
+    <div class="quote">
+        <p>✨ {{ quote }}</p>
+    </div>
+    {% for article in articles %}
+        <article class="post-preview">
+            <h2><a href="{{ url_for('browse', article_id=article.id) }}">{{ article.title }}</a></h2>
+            <div class="post-meta">{{ article.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+            <div class="post-summary">
+                {{ article.content_md[:150] | striptags }}...
+            </div>
+            <a href="{{ url_for('browse', article_id=article.id) }}" class="read-more">阅读全文 →</a>
+            <br>
+            <a href="{{ url_for('delete_article', article_id = article.id )}}">删除文章</a>
+        </article>
+    {% else %}
+        <p>暂无文章，
+            {% if session.get('logged_in') %}
+                试着写一个吧！
+            {% else %}
+                <a href="{{ url_for('login') }}">登录后发布</a>
+            {% endif %}
+        </p>
+    {% endfor %}
+{% endblock %}
