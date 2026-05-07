@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ '编辑文章' if article else '新建文章' }}{% endblock %}
+{% block title %}我的博客 - {{ '编辑文章' if article else '新建文章' }}{% endblock %}
 {% block content %}
     <h2>我的博客 - {{ '编辑文章' if article else '新建文章' }}</h2>
     <form action="{{ url_for('admin', article_id = article.id if article else 0) }}" method="post" enctype="multipart/form-data">
